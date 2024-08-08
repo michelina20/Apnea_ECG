@@ -64,7 +64,7 @@ El paso a paso se encuentra línea a línea dentro del código
 
 ## resultados:
 
-El histograma se grafico de la siguiente forma:
+La señal inicial es: 
 ```python
 #Importar paquete wfdb para leer "records" de physionet
 import wfdb
@@ -82,7 +82,12 @@ plt.title('Gráfico de datos de Apnea ECG record 8')
 plt.xlabel('Tiempo (s)')
 plt.ylabel('Voltaje (mv)')
 plt.grid(True)
+```
 
+#![Histograma con pyton](señal_inicial.png)
+
+El histograma se grafico de la siguiente forma:
+```python
 
 #Crear el histograma
 plt.figure(figsize=(12, 6))
