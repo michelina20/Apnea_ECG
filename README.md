@@ -116,3 +116,25 @@ plt.grid(True)
 ```
 
 #![Señal contaminada con ruido gaussiano en pyton](señalconruio_gauss1.png)
+
+La señal contaminada con ruido Gaussiano en el segundo caso de acuerdo a lo descrito es:
+
+```python
+amplitud_deseada = 1  # Amplitud máxima específica que deseas
+amplitud_original_ruido = np.max(np.abs(ruido))
+scaled_ruido = (ruido /amplitud_original_ruido) * amplitud_deseada
+nueva_amplitud_ruido = np.max(np.abs(scaled_ruido))
+
+suma_señal_contaminada2=valores+scaled_ruido
+print(suma_señal_contaminada2)
+plt.plot(suma_señal_contaminada2)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido gaussiano')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+
+```
+
+#![Señal contaminada con ruido gaussiano en pyton](Señal con ruido gaussiano2.png)
+
