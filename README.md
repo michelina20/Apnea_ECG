@@ -136,5 +136,5 @@ plt.grid(True)
 
 ```
 
-#![Señal contaminada con ruido gaussiano en pyton](Señal con ruido gaussiano2.png)
+#![Señal contaminada con ruido gaussiano en pyton](señalconruio_gauss1.png)
 
