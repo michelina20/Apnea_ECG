@@ -1,0 +1,342 @@
+# -*- coding: utf-8 -*-
+"""
+LABORATORIO #1 - ANÁLISIS ESTADÍSTICO DE LA SEÑAL 
+Presentado por: Eliana Domínguez Sabalza (5600587) y Michel Alejandra Ciabato Jiménez (5600595)
+"""
+
+#Importar paquete wfdb para leer "records" de physionet
+import wfdb
+import matplotlib.pyplot as plt 
+import numpy as np
+
+#SEÑAL FISIOLÓGICA: BASE DE DATOS DE APNEA - ECG (archivos .dat y .hea)
+
+signal=wfdb.rdrecord('a08')
+#Obtener valores de Y de la señal 
+valores=signal.p_signal[:,0]
+print(valores)
+plt.plot(valores)
+plt.title('Gráfico de datos de Apnea ECG record 8')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+#%%-------------------CALCULAR DATOS ESTADÍSTICOS CON FUNCIONES ESTABLECIDAS DE PYTHON------------------
+#CALCULAR MEDIA
+calcularmedia= np.mean (valores)
+print("La media de la señal es:", calcularmedia)
+
+#CALCULAR DESVIACIÓN ESTÁNDAR
+calcular_desviacion_estandar=np.std(valores)
+print("La desviación estándar de la señal es:",calcular_desviacion_estandar)
+
+#CALCULAR COEFICIENTE DE VARIACIÓN
+calcular_coeficiente_de_variacion=(calcular_desviacion_estandar/calcularmedia)*100
+print("El coeficiente de variación de la señal es:",calcular_coeficiente_de_variacion)
+#%% HISTOGRAMA
+#Crear el histograma
+plt.figure(figsize=(12, 6))
+plt.hist(valores, bins=20, color='orange', edgecolor='black', density=True)
+plt.xlabel('Muestras')
+plt.ylabel('Valores en Y')
+plt.title('Histograma de la señal con funcion')
+plt.show()
+#%%FUNCIÓN DE PROBABILIDAD Y SU RESPECTIVA GRÁFICA
+# Calcular el histograma y normalizarlo para obtener la densidad de probabilidad
+conteos, bins = np.histogram(valores, bins=30, density=True)
+centro_bins = (bins[:-1] + bins[1:]) / 2
+
+# Graficar la función de probabilidad
+plt.figure(figsize=(12, 6))
+plt.plot(centro_bins, conteos, label='Densidad de Probabilidad', color='blue')
+plt.xlabel('Valor de la Señal')
+plt.ylabel('Densidad de Probabilidad')
+plt.title('Función de Probabilidad de la Señal')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+#%%-----------------------CALCULAR DATOS ESTADÍSTICOS CON FUNCIONES BÁSICAS DE PROGRAMACIÓN----------
+
+# Calcular la media de los valores de la señal
+suma_total = sum(valores)
+numero_de_valores = len(valores)
+media = suma_total / numero_de_valores
+print("La media de la señal es:", media)
+
+#Calcular desviación estándar 
+num_valores = len(valores)
+suma_cuadrados = 0
+for dato in valores:
+    suma_cuadrados += (dato - media) ** 2
+varianza = suma_cuadrados / num_valores
+desviacion_estandar = varianza ** 0.5
+print ("La desviación estándar de esta señal es:",desviacion_estandar)
+
+#Calcular el coeficiente de variación 
+c_v=(desviacion_estandar/media)*100
+print ("El coeficiente de variación de esta señal es:",c_v,"%")
+
+#%%--------------------------------RELACIÓN SEÑAL RUIDO (GAUSSIANO)-----------------------------------------------
+#Agregar ruido gaussiano cuando el ruido es mayor que la señal 
+mean = 0       # Media del ruido (por defecto 0)
+desviacion_estandar_ruido = 1    # Desviación estándar del ruido (por defecto 1)
+# Genera ruido gaussiano 1
+ruido = np.random.normal(mean, desviacion_estandar_ruido, valores.shape)
+# Graficar el ruido gaussiano 1
+plt.figure(figsize=(10, 5))
+plt.plot(ruido, label='Ruido Gaussiano')
+plt.title('Ruido Gaussiano')
+plt.xlabel('Índice')
+plt.ylabel('Valor del Ruido')
+plt.legend()
+plt.grid(True)
+plt.show()
+#AMPLITUD DEL RUIDO GAUSSIANO 1
+maximo=max(ruido)
+print("Amplitud del ruido gaussiano:", maximo)
+#AMPLITUD DE LA SEÑAL FISIOLÓGICA
+max_señal= max(valores)
+print ("Amplitud de la señal fisiológica", max_señal)
+
+#POTENCIA DEL RUIDO GAUSSIANO 1 CON MAS RUIDO QUE SEÑAL 
+
+ruido_squared = np.square(ruido)
+sumatoria_ruido = np.sum(ruido_squared)
+resultado_potencia_ruido = sumatoria_ruido / len(ruido)
+
+print(f'Potencia del ruido sin escalar es: {resultado_potencia_ruido}')
+
+#POTENCIA DE LA SEÑAL FISIOLÓGICA ORIGINAL
+
+signal_squared = np.square(valores)
+sumatoria = np.sum(signal_squared)
+resultado_potencia_señal = sumatoria / len(valores)
+
+print(f'La potencia de la señal es: {resultado_potencia_señal}')
+
+#SUMA DE RUIDO GAUSSIANO 1 + SEÑAL 
+suma_señal_contaminada=valores+ruido
+print(suma_señal_contaminada)
+plt.plot(suma_señal_contaminada)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido gaussiano')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+#CALCULAR SNR CUANDO HAY MÁS RUIDO QUE SEÑAL 
+SNR=10*np.log10(resultado_potencia_señal/resultado_potencia_ruido)
+print("El SNR de la señal con ruido gaussiano 1 es:", SNR)
+#%%Agregar ruido gaussiano cuando la señal es mayor que el ruido
+amplitud_deseada = 1  # Amplitud máxima específica que deseas
+# Encontrar el valor máximo absoluto del ruido generado
+amplitud_original_ruido = np.max(np.abs(ruido))
+print (amplitud_original_ruido)
+
+# Escalar el ruido para que tenga la amplitud máxima deseada
+scaled_ruido = (ruido /amplitud_original_ruido) * amplitud_deseada
+
+# Verificar la nueva amplitud máxima
+nueva_amplitud_ruido = np.max(np.abs(scaled_ruido))
+print(f'Amplitud máxima deseada: {amplitud_deseada}')
+print(f'Amplitud máxima del ruido escalado: {nueva_amplitud_ruido}')
+
+# Graficar el ruido original y el ruido escalado
+plt.figure(figsize=(10, 6))
+
+plt.subplot(2, 1, 1)
+plt.plot(ruido)
+plt.title('Ruido Gaussiano Original')
+plt.subplot(2, 1, 2)
+plt.plot(scaled_ruido)
+plt.title('Ruido Gaussiano Escalado con Amplitud Máxima Específica')
+
+plt.tight_layout()
+plt.show()
+
+#POTENCIA DEL RUIDO CON MÁS SEÑAL QUE RUIDO
+
+scaled_ruido_squared = np.square(scaled_ruido)
+sumatoria_scaled_ruido = np.sum(scaled_ruido_squared)
+resultado_scaled_ruido = sumatoria_scaled_ruido / len(scaled_ruido)
+
+print(f'Potencia final del ruido escalado: {resultado_scaled_ruido}')
+
+#SUMA DE RUIDO GAUSSIANO 2 + SEÑAL 
+suma_señal_contaminada2=valores+scaled_ruido
+print(suma_señal_contaminada2)
+plt.plot(suma_señal_contaminada2)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido gaussiano')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+#CALCULAR SNR CUANDO HAY MÁS SEÑAL QUE RUIDO GAUSSIANO
+SNR=10*np.log10(resultado_potencia_señal/resultado_scaled_ruido)
+print("El SNR de la señal con ruido gaussiano 2 es:", SNR)
+
+#%%--------------------------------RELACIÓN SEÑAL RUIDO (ARTEFACTO)----------------------------
+# Se crea el ruido tipo artefacto
+artifact = np.zeros(len(valores))
+n_artifacts = int(len(valores) * 0.0005)
+artifact_positions = np.random.choice(len(valores), n_artifacts, replace=False)
+artifact[artifact_positions] = np.random.normal(0, 10, n_artifacts)  # Artefactos aleatorios grandes
+
+# Graficar el ruido tipo artefacto
+plt.figure(figsize=(12, 6))
+plt.plot (artifact, label="Señal artefactos grandes", linestyle='--')
+plt.title('Señal  Ruido Tipo Artefacto')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+#AMPLITUD DEL RUIDO TIPO ARTEFACTO 1
+maximo_art=max(artifact)
+print("Amplitud del ruido tipo artefacto:", maximo_art)
+
+#POTENCIA DEL RUIDO TIPO ARTEFACTO 1 CON MÁS SEÑAL QUE RUIDO
+
+artifact_square = np.square(artifact)
+sumatoria_artifact = np.sum(artifact_square)
+resultado_potencia_artifact= sumatoria_artifact / len(artifact)
+print(f'Potencia del ruido tipo artefacto 1 es: {resultado_potencia_artifact}')
+
+#SUMA DE RUIDO ARTEFACTO 1 + SEÑAL 
+señal_contaminada_artifact=valores+artifact
+print(señal_contaminada_artifact)
+plt.plot(señal_contaminada_artifact)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido tipo artefacto')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+#CALCULAR SNR CON MÁS SEÑAL QUE RUIDO
+SNR=10*np.log10(resultado_potencia_señal/resultado_potencia_artifact)
+print("El SNR de la señal con ruido artefacto 1  es:", SNR)
+
+#%% PROCESO PARA SEÑAL ARTEFACTO CON MÁS RUIDO QUE SEÑAL 
+# Se crea el ruido tipo artefacto 2
+artifact2 = np.zeros(len(valores))
+n_artifacts2 = int(len(valores) * 0.05)
+artifact_positions2 = np.random.choice(len(valores), n_artifacts2, replace=False)
+artifact2[artifact_positions2] = np.random.normal(0, 10, n_artifacts2)  # Artefactos aleatorios grandes
+
+# Graficar
+plt.figure(figsize=(12, 6))
+plt.plot (artifact2, label="Señal artefactos 2 grandes", linestyle='--')
+plt.title('Señal  Ruido Tipo Artefacto 2')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+#AMPLITUD DEL RUIDO TIPO ARTEFACTO 2
+maximo_art2=max(artifact2)
+print("Amplitud del ruido tipo artefacto 2:", maximo_art2)
+
+#POTENCIA DEL RUIDO TIPO ARTEFACTO 2 CON MÁS RUIDO QUE SEÑAL
+
+artifact_square2 = np.square(artifact2)
+sumatoria_artifact2 = np.sum(artifact_square2)
+resultado_potencia_artifact2= sumatoria_artifact2 / len(artifact2)
+print(f'Potencia del ruido tipo artefacto 2 es: {resultado_potencia_artifact2}')
+
+#SUMA DE RUIDO ARTEFACTO 2 + SEÑAL 
+señal_contaminada_artifact2=valores+artifact2
+print(señal_contaminada_artifact2)
+plt.plot(señal_contaminada_artifact2)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido tipo artefacto 2')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+#CALCULAR SNR CON MÁS RUIDO QUE SEÑAL
+SNR=10*np.log10(resultado_potencia_señal/resultado_potencia_artifact2)
+print("El SNR de la señal con ruido artefacto 2  es:", SNR)
+
+#%%--------------------------------RELACIÓN SEÑAL RUIDO (IMPULSO)---------------------
+# Se crea el ruido tipo impulso 1
+ruido_impulso = np.zeros(len(valores))
+
+n_impulses = int(len(valores) * 0.00001)
+
+# Seleccionar posiciones aleatorias para los impulsos
+impulse_positions = np.random.choice(len(valores), n_impulses, replace=False)
+
+# Establecer los impulsos en la señal
+ruido_impulso[impulse_positions] = 8 # Puedes ajustar el valor del impulso según sea necesario
+
+# Graficar la señal
+
+plt.figure(figsize=(10, 5))
+plt.plot(ruido_impulso, label='Ruido Impulso', color='red')
+plt.title('Ruido Impulso')
+plt.xlabel('Índice')
+plt.ylabel('Valor del Ruido')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+#AMPLITUD DEL RUIDO TIPO IMPULSO 1
+maximo_impu=max(ruido_impulso)
+print("Amplitud del ruido tipo impulso:", maximo_impu)
+
+#POTENCIA DEL RUIDO TIPO IMPULSO 1 CON MÁS SEÑAL QUE RUIDO
+
+ruido_impulso_square = np.square(ruido_impulso)
+sumatoria_ruido_impulso = np.sum(ruido_impulso_square)
+resultado_potencia_ruido_impulso= sumatoria_ruido_impulso / len(ruido_impulso)
+
+print(f'Potencia del ruido impulso sin escalar es: {resultado_potencia_ruido_impulso}')
+
+#SUMA DE RUIDO TIPO IMPULSO 1 + SEÑAL 
+señal_contaminada_impulso=valores+ruido_impulso
+print(señal_contaminada_impulso)
+plt.plot(señal_contaminada_impulso)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido impulso')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+#CALCULAR SNR CON MÁS SEÑAL QUE RUIDO
+SNR=10*np.log10(resultado_potencia_señal/resultado_potencia_ruido_impulso)
+print("El SNR de la señal con ruido impulso  es:", SNR)
+#%% PROCESO PARA SEÑAL IMPULSO CON MÁS RUIDO QUE SEÑAL 
+# Se crea el ruido tipo impulso 2
+ruido_impulso2 = np.zeros(len(valores))
+
+n_impulses2 = int(len(valores) * 0.01)
+
+# Seleccionar posiciones aleatorias para los impulsos
+impulse_positions2 = np.random.choice(len(valores), n_impulses2, replace=False)
+ruido_impulso2[impulse_positions2] = 20
+
+# Graficar la señal
+plt.figure(figsize=(10, 5))
+plt.plot(ruido_impulso2, label='Ruido Impulso2', color='red')
+plt.title('Ruido Impulso2')
+plt.xlabel('Índice')
+plt.ylabel('Valor del Ruido')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+#AMPLITUD DEL RUIDO TIPO IMPULSO 2
+maximo_impu2=max(ruido_impulso2)
+print("Amplitud del ruido tipo impulso2:", maximo_impu2)
+
+#POTENCIA DEL RUIDO TIPO IMPULSO 2 CON MÁS SEÑAL QUE RUIDO
+
+ruido_impulso_square2 = np.square(ruido_impulso2)
+sumatoria_ruido_impulso2 = np.sum(ruido_impulso_square2)
+resultado_potencia_ruido_impulso2= sumatoria_ruido_impulso2 / len(ruido_impulso2)
+
+print(f'Potencia del ruido impulso sin escalar es: {resultado_potencia_ruido_impulso2}')
+
+#SUMA DE RUIDO TIPO IMPULSO 2 + SEÑAL 
+señal_contaminada_impulso2=valores+ruido_impulso2
+print(señal_contaminada_impulso2)
+plt.plot(señal_contaminada_impulso2)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido impulso 2')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+#CALCULAR SNR CON MÁS RUIDO QUE SEÑAL
+SNR=10*np.log10(resultado_potencia_señal/resultado_potencia_ruido_impulso2)
+print("El SNR de la señal con ruido impulso 2 es:", SNR)
