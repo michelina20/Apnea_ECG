@@ -187,3 +187,24 @@ plt.grid(True)
 ```
 #![Señal contaminada con ruido impulso en pyton](señalconruidoimp2.png)
 
+
+
+
+La señal contaminada con ruido artefacto en el primer caso de acuerdo a lo descrito es:
+
+```python
+artifact = np.zeros(len(valores))
+n_artifacts = int(len(valores) * 0.0005)
+artifact_positions = np.random.choice(len(valores), n_artifacts, replace=False)
+artifact[artifact_positions] = np.random.normal(0, 10, n_artifacts)  # Artefactos aleatorios grandes
+
+señal_contaminada_artifact=valores+artifact
+print(señal_contaminada_artifact)
+plt.plot(señal_contaminada_artifact)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido tipo artefacto')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+```
+#![Señal contaminada con ruido impulso en pyton](señalconruidoarte1.png)
+
