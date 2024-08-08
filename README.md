@@ -66,6 +66,23 @@ El paso a paso se encuentra línea a línea dentro del código
 
 El histograma se grafico de la siguiente forma:
 
+#Importar paquete wfdb para leer "records" de physionet
+import wfdb
+import matplotlib.pyplot as plt 
+import numpy as np
+
+#SEÑAL FISIOLÓGICA: BASE DE DATOS DE APNEA - ECG (archivos .dat y .hea)
+
+signal=wfdb.rdrecord('a08')
+#Obtener valores de Y de la señal 
+valores=signal.p_signal[:,0]
+print(valores)
+plt.plot(valores)
+plt.title('Gráfico de datos de Apnea ECG record 8')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
 
 #Crear el histograma
 plt.figure(figsize=(12, 6))
