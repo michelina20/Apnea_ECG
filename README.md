@@ -5,6 +5,7 @@
 2. [Descripción de la relación señal ruido en este proyecto](#descripción de la relación señal ruido en este proyecto)
 3. [Instalaciones previas](#instalación)
 4. [Instructivo y entendimiento del código](#instructivo)
+5. [Resultados](#resultados)
 
 
 
@@ -60,3 +61,16 @@ Para los dos tipos de ruido restantes se manipularon a conveniencia la cantidad 
 ## Instructivo:
 
 El paso a paso se encuentra línea a línea dentro del código
+
+## resultados:
+
+El histograma se grafico de la siguiente forma:
+
+
+#Crear el histograma
+plt.figure(figsize=(12, 6))
+plt.hist(valores, bins=20, color='orange', edgecolor='black', density=True)
+plt.xlabel('Muestras')
+plt.ylabel('Valores en Y')
+plt.title('Histograma de la señal con funcion')
+plt.show()
