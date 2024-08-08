@@ -65,7 +65,7 @@ El paso a paso se encuentra línea a línea dentro del código
 ## resultados:
 
 El histograma se grafico de la siguiente forma:
-
+```python
 #Importar paquete wfdb para leer "records" de physionet
 import wfdb
 import matplotlib.pyplot as plt 
@@ -91,3 +91,5 @@ plt.xlabel('Muestras')
 plt.ylabel('Valores en Y')
 plt.title('Histograma de la señal con funcion')
 plt.show()
+
+```
