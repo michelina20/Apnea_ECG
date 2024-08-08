@@ -93,3 +93,5 @@ plt.title('Histograma de la señal con funcion')
 plt.show()
 
 ```
+
+#![Histograma con pyton](Histograma.png)
