@@ -95,3 +95,24 @@ plt.show()
 ```
 
 #![Histograma con pyton](histogramaaa.png)
+
+
+La señal contaminada con ruido Gaussiano en el primer caso de acuerdo a lo descrito es:
+
+```python
+mean = 0       # Media del ruido (por defecto 0)
+desviacion_estandar_ruido = 1    # Desviación estándar del ruido (por defecto 1)
+# Genera ruido gaussiano 1
+ruido = np.random.normal(mean, desviacion_estandar_ruido, valores.shape)
+
+suma_señal_contaminada=valores+ruido
+print(suma_señal_contaminada)
+plt.plot(suma_señal_contaminada)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido gaussiano')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+```
+
+#![Señal contaminada con ruido gaussiano en pyton](señalconruio_gauss1.png)
