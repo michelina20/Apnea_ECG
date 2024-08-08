@@ -115,7 +115,7 @@ plt.grid(True)
 
 ```
 
-#![Señal contaminada con ruido gaussiano en pyton](señalconruio_gauss1.png)
+#![Señal contaminada con ruido gaussiano 1 en pyton](señalconruio_gauss1.png)
 
 La señal contaminada con ruido Gaussiano en el segundo caso de acuerdo a lo descrito es:
 
@@ -136,7 +136,7 @@ plt.grid(True)
 
 ```
 
-#![Señal contaminada con ruido gaussiano en pyton](señalconruio_gauss1.png)
+#![Señal contaminada con ruido gaussiano 2 en pyton](señalconruio_gauss1.png)
 
 La señal contaminada con ruido impulso en el primer caso de acuerdo a lo descrito es:
 
@@ -161,7 +161,7 @@ plt.ylabel('Voltaje (mv)')
 plt.grid(True)
 
 ```
-#![Señal contaminada con ruido impulso en pyton](señalconruidoimp.png)
+#![Señal contaminada con ruido impulso 1 en pyton](señalconruidoimp.png)
 
 
 La señal contaminada con ruido impulso en el segundo caso de acuerdo a lo descrito es:
@@ -185,7 +185,7 @@ plt.ylabel('Voltaje (mv)')
 plt.grid(True)
 
 ```
-#![Señal contaminada con ruido impulso en pyton](señalconruidoimp2.png)
+#![Señal contaminada con ruido impulso 2 en pyton](señalconruidoimp2.png)
 
 
 
@@ -206,7 +206,7 @@ plt.xlabel('Tiempo (s)')
 plt.ylabel('Voltaje (mv)')
 plt.grid(True)
 ```
-#![Señal contaminada con ruido impulso en pyton](señalconruidoarte1.png)
+#![Señal contaminada con ruido arte1 en pyton](señalconruidoarte1.png)
 
 
 
@@ -228,7 +228,7 @@ plt.xlabel('Tiempo (s)')
 plt.ylabel('Voltaje (mv)')
 plt.grid(True)
 ```
-#![Señal contaminada con ruido impulso en pyton](señalconruidoarte2.png)
+#![Señal contaminada con ruido arte 2 en pyton](señalconruidoarte2.png)
 
 
 
