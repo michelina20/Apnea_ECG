@@ -162,3 +162,28 @@ plt.grid(True)
 
 ```
 #![Señal contaminada con ruido impulso en pyton](señalconruidoimp.png)
+
+
+La señal contaminada con ruido impulso en el segundo caso de acuerdo a lo descrito es:
+
+```python
+rruido_impulso2 = np.zeros(len(valores))
+
+n_impulses2 = int(len(valores) * 0.01)
+
+# Seleccionar posiciones aleatorias para los impulsos
+impulse_positions2 = np.random.choice(len(valores), n_impulses2, replace=False)
+ruido_impulso2[impulse_positions2] = 20
+
+
+señal_contaminada_impulso2=valores+ruido_impulso2
+print(señal_contaminada_impulso2)
+plt.plot(señal_contaminada_impulso2)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido impulso 2')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+```
+#![Señal contaminada con ruido impulso en pyton](señalconruidoimp2.png)
+
