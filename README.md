@@ -138,3 +138,27 @@ plt.grid(True)
 
 #![Señal contaminada con ruido gaussiano en pyton](señalconruio_gauss1.png)
 
+La señal contaminada con ruido impulso en el primer caso de acuerdo a lo descrito es:
+
+```python
+ruido_impulso = np.zeros(len(valores))
+
+n_impulses = int(len(valores) * 0.00001)
+
+# Seleccionar posiciones aleatorias para los impulsos
+impulse_positions = np.random.choice(len(valores), n_impulses, replace=False)
+
+# Establecer los impulsos en la señal
+ruido_impulso[impulse_positions] = 8 # Puedes ajustar el valor del impulso según sea necesario
+
+
+señal_contaminada_impulso=valores+ruido_impulso
+print(señal_contaminada_impulso)
+plt.plot(señal_contaminada_impulso)
+plt.title('Gráfico de datos de Apnea ECG contaminada con ruido impulso')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (mv)')
+plt.grid(True)
+
+```
+#![Señal contaminada con ruido impulso en pyton](señalconruidoimp.png)
