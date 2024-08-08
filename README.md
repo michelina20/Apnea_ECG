@@ -94,4 +94,4 @@ plt.show()
 
 ```
 
-#![Histograma con pyton](Histograma.png)
+#![Histograma con pyton](histogramaaa.png)
